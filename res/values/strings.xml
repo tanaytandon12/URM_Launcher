@@ -1,0 +1,19 @@
+<resources>
+
+    <string name="app_name">URMLauncher</string>
+    <string name="app">APPS</string>
+    <string name="widget">WIDGETS</string>
+    <string name="settings">SETTINGS</string>
+    <string name="icon_description">It is an icon</string>
+    <string name="change_background">Change the background</string>
+    <string name="lock">Lock the phone</string>
+    
+    <string name="volume">Volume Control Icon</string>
+    <string name="battery_saver">Toggle battery saver mode</string>
+    <string name="background">Change the background of the application</string>
+    <string name="toggle_direction">Change the direction in which the icon list appears</string>
+    <string name="intensity">Change the intensity of the icon change rate</string>
+    <string name="open_widget">Open the widget view</string>
+    <string name="silent">Change the silence mode</string>
+
+</resources>

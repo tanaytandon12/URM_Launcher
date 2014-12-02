@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="9"
+        android:orientation="horizontal" >
+
+        <FrameLayout
+            android:id="@+id/main_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/icon_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="2dp"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/icon_volume"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/icon_height"
+            android:contentDescription="@string/volume"
+            android:src="@drawable/loud" />
+
+        <ImageView
+            android:id="@+id/icon_battery_saver"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/icon_height"
+            android:contentDescription="@string/battery_saver"
+            android:src="@drawable/battery_high" />
+
+        <ImageView
+            android:id="@+id/icon_background"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/icon_height"
+            android:contentDescription="@string/background"
+            android:src="@drawable/background" />
+
+        <ImageView
+            android:id="@+id/icon_intensity"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/icon_height"
+            android:contentDescription="@string/intensity"
+            android:src="@drawable/app_intensity_medium" />
+
+        <ImageView
+            android:id="@+id/icon_view"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/icon_height"
+            android:contentDescription="@string/widget"
+            android:src="@drawable/app" />
+
+        <ImageView
+            android:id="@+id/icon_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/icon_height"
+            android:contentDescription="@string/toggle_direction"
+            android:src="@drawable/ic_launcher" />
+    </LinearLayout>
+
+</LinearLayout>
