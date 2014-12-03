@@ -69,6 +69,7 @@ public class GridAdapter extends BaseAdapter {
 		appIconImageView.getLayoutParams().height = dimen;
 		appIconImageView.getLayoutParams().width = w;
 		appNameTextView.getLayoutParams().width = w;
+		appNameTextView.getLayoutParams().height = dimen;
 		return convertView;
 	}
 

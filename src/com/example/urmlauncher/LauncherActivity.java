@@ -3,8 +3,6 @@ package com.example.urmlauncher;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javax.crypto.spec.IvParameterSpec;
-
 import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
@@ -28,11 +26,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 
 public class LauncherActivity extends FragmentActivity {
 
@@ -45,7 +40,7 @@ public class LauncherActivity extends FragmentActivity {
 	private ImageView toggleImageView, viewModeImageView,
 			appChangeIntensityImageView, volumeImageView,
 			changeBackgroundImageView, batterySaverModeImageView;
-	private long animationDuration = 1000;
+	private long animationDuration = 5000;
 	private FragmentManager fm;
 	private FragmentTransaction ft;
 	private AudioManager audioManager;
@@ -72,32 +67,6 @@ public class LauncherActivity extends FragmentActivity {
 
 		mainLayout = (LinearLayout) findViewById(R.id.main);
 
-		FrameLayout frame = (FrameLayout) findViewById(R.id.main_frame);
-
-		frame.setOnTouchListener(new OnSwipeTouchListener(
-				getApplicationContext()) {
-			@Override
-			public void onSwipeUp() {
-				if (iconLayout.getVisibility() == View.GONE) {
-					Animation anim = new TranslateAnimation(0, 0, HEIGHT * 2,
-							HEIGHT);
-					anim.setDuration(animationDuration);
-					iconLayout.setVisibility(View.VISIBLE);
-					iconLayout.setAnimation(anim);
-				}
-			}
-
-			@Override
-			public void onSwipeLeft() {
-				Log.d("frame", "swipe left");
-			}
-
-			@Override
-			public void onSwipeRight() {
-				Log.d("frame", "swipe right");
-			}
-		});
-
 		mainLayout.setOnTouchListener(new OnSwipeTouchListener(
 				getApplicationContext()) {
 			@Override
@@ -105,9 +74,14 @@ public class LauncherActivity extends FragmentActivity {
 				if (iconLayout.getVisibility() == View.GONE) {
 					Animation anim = new TranslateAnimation(0, 0, HEIGHT * 2,
 							HEIGHT);
+					Log.d("", "Swipe up");
 					anim.setDuration(animationDuration);
 					iconLayout.setVisibility(View.VISIBLE);
-					iconLayout.setAnimation(anim);
+					// iconLayout.setAnimation(anim);
+					MenuFragment menuFrag = new MenuFragment();
+					menuFrag.show(getSupportFragmentManager(), "Menu Fragment");
+					menuFrag.setEnterTransition(anim);
+
 				}
 			}
 

@@ -30,7 +30,8 @@
                 android:id="@+id/medium_app_view_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp" >
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp" >
 
                 <ImageView
                     android:id="@+id/medium_app_icon_1"
@@ -58,7 +59,8 @@
                 android:id="@+id/medium_app_view_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp" >
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp" >
 
                 <ImageView
                     android:id="@+id/medium_app_icon_2"
@@ -86,7 +88,8 @@
                 android:id="@+id/medium_app_view_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp" >
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp" >
 
                 <ImageView
                     android:id="@+id/medium_app_icon_3"
@@ -120,7 +123,8 @@
                 android:id="@+id/medium_app_view_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp" >
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp" >
 
                 <ImageView
                     android:id="@+id/medium_app_icon_4"
@@ -148,7 +152,8 @@
                 android:id="@+id/medium_app_view_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp" >
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp" >
 
                 <ImageView
                     android:id="@+id/medium_app_icon_5"
@@ -176,7 +181,8 @@
                 android:id="@+id/medium_app_view_6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp" >
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp" >
 
                 <ImageView
                     android:id="@+id/medium_app_icon_6"
@@ -213,7 +219,8 @@
             android:id="@+id/large_app_view_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp" >
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp" >
 
             <ImageView
                 android:id="@+id/large_app_icon_1"
@@ -241,7 +248,8 @@
             android:id="@+id/large_app_view_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp" >
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp" >
 
             <ImageView
                 android:id="@+id/large_app_icon_2"
@@ -269,7 +277,8 @@
             android:id="@+id/large_app_view_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp" >
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp" >
 
             <ImageView
                 android:id="@+id/large_app_icon_3"

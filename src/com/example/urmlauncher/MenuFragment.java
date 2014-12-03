@@ -10,6 +10,8 @@ import android.view.Window;
 
 public class MenuFragment extends DialogFragment {
 
+
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
