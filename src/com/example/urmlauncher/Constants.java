@@ -31,4 +31,10 @@ public class Constants {
 	// the fragment tags
 	public final static String TAG_APP = "app";
 	public final static String TAG_WIDGET = "widget";
+
+	// set the value of tag to see if menu is visible
+	public final static String HINT_VISIBILITY = "visbility";
+
+	// set if click event will launch or not
+	public final static String APP_LAUNCH = "launch";
 }

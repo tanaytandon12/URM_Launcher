@@ -24,10 +24,10 @@ import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class LauncherActivity extends FragmentActivity {
 
@@ -36,11 +36,12 @@ public class LauncherActivity extends FragmentActivity {
 	public static int WIDTH, HEIGHT;
 	private SharedPreferences sharedPref;
 	private SharedPreferences.Editor sharedPrefEditor;
-	private LinearLayout iconLayout, mainLayout;
+	private LinearLayout mainLayout;
 	private ImageView toggleImageView, viewModeImageView,
 			appChangeIntensityImageView, volumeImageView,
-			changeBackgroundImageView, batterySaverModeImageView;
-	private long animationDuration = 5000;
+			changeBackgroundImageView, batterySaverModeImageView,
+			swipeHintImageView;
+	private TextView swipeHintTextView;
 	private FragmentManager fm;
 	private FragmentTransaction ft;
 	private AudioManager audioManager;
@@ -48,6 +49,8 @@ public class LauncherActivity extends FragmentActivity {
 	private int[] audioStreams = { AudioManager.STREAM_ALARM,
 			AudioManager.STREAM_DTMF, AudioManager.STREAM_NOTIFICATION,
 			AudioManager.STREAM_RING };
+
+	private int ICON_WIDTH = 256, ICON_HEIGHT = 256;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,24 +68,82 @@ public class LauncherActivity extends FragmentActivity {
 		HEIGHT = size.y;
 		WIDTH = size.x;
 
+		// get the shared preferences
+		sharedPref = getSharedPreferences(Constants.URM, Context.MODE_PRIVATE);
+		sharedPrefEditor = sharedPref.edit();
+
 		mainLayout = (LinearLayout) findViewById(R.id.main);
+		mainLayout.setAlpha(0.05f);
+
+		// icon imageviews
+		toggleImageView = (ImageView) findViewById(R.id.icon_toggle);
+		viewModeImageView = (ImageView) findViewById(R.id.icon_view);
+		appChangeIntensityImageView = (ImageView) findViewById(R.id.icon_intensity);
+		volumeImageView = (ImageView) findViewById(R.id.icon_volume);
+		changeBackgroundImageView = (ImageView) findViewById(R.id.icon_background);
+		batterySaverModeImageView = (ImageView) findViewById(R.id.icon_battery_saver);
+
+		// set the position of the menu
+		setUpMenu();
+
+		// the hint views
+		swipeHintImageView = (ImageView) findViewById(R.id.hint_swipe_image);
+		swipeHintTextView = (TextView) findViewById(R.id.hint_swipe_text);
+
+		audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+
+		Fragment appFragment = new AppFragment();
+
+		fm = getSupportFragmentManager();
+		ft = fm.beginTransaction();
+		ft.add(R.id.main_frame, appFragment, Constants.TAG_APP).commit();
+
+		sharedPrefEditor.putBoolean(Constants.APP_LAUNCH, false).commit();
+
+		if (sharedPref.getBoolean(Constants.HINT_VISIBILITY, false)) {
+			swipeHintImageView.setVisibility(View.GONE);
+			swipeHintTextView.setVisibility(View.GONE);
+			mainLayout.setAlpha(1.0f);
+			sharedPrefEditor.putBoolean(Constants.APP_LAUNCH, true).commit();
+		}
 
 		mainLayout.setOnTouchListener(new OnSwipeTouchListener(
 				getApplicationContext()) {
 			@Override
 			public void onSwipeUp() {
-				if (iconLayout.getVisibility() == View.GONE) {
-					Animation anim = new TranslateAnimation(0, 0, HEIGHT * 2,
-							HEIGHT);
-					Log.d("", "Swipe up");
-					anim.setDuration(animationDuration);
-					iconLayout.setVisibility(View.VISIBLE);
-					// iconLayout.setAnimation(anim);
-					MenuFragment menuFrag = new MenuFragment();
-					menuFrag.show(getSupportFragmentManager(), "Menu Fragment");
-					menuFrag.setEnterTransition(anim);
+				Log.d("", "Swipe up");
+				
+				// hide the hints
+				swipeHintImageView.setVisibility(View.GONE);
+				swipeHintTextView.setVisibility(View.GONE);
 
-				}
+				// set the opacity of the main layout to 5%
+				mainLayout.setAlpha(0.05f);
+
+				// the apps cannot be laucnched
+				sharedPrefEditor.putBoolean(Constants.APP_LAUNCH, false).commit();
+				
+				// show the menu icons
+				showMenu();
+
+				// set the value in the sharedPref that the hint is no longer
+				// needed
+				sharedPrefEditor.putBoolean(Constants.HINT_VISIBILITY, true)
+						.commit();
+			}
+
+			@Override
+			public void onSwipeDown() {
+				Log.d("", "Swipe Down");
+
+				// hide the menu icons
+				hideMenu();
+
+				// the click will trigger application launches
+				sharedPrefEditor.putBoolean(Constants.APP_LAUNCH, true).commit();
+
+				mainLayout.setAlpha(1.0f);
 			}
 
 			@Override
@@ -96,18 +157,6 @@ public class LauncherActivity extends FragmentActivity {
 			}
 		});
 
-		// get the shared preferences
-		sharedPref = getSharedPreferences(Constants.URM, Context.MODE_PRIVATE);
-		sharedPrefEditor = sharedPref.edit();
-
-		// icon imageviews
-		toggleImageView = (ImageView) findViewById(R.id.icon_toggle);
-		viewModeImageView = (ImageView) findViewById(R.id.icon_view);
-		appChangeIntensityImageView = (ImageView) findViewById(R.id.icon_intensity);
-		volumeImageView = (ImageView) findViewById(R.id.icon_volume);
-		changeBackgroundImageView = (ImageView) findViewById(R.id.icon_background);
-		batterySaverModeImageView = (ImageView) findViewById(R.id.icon_battery_saver);
-
 		int iconWidth = WIDTH / 6;
 		// int iconHeight = HEIGHT / 16;
 
@@ -119,44 +168,19 @@ public class LauncherActivity extends FragmentActivity {
 		changeBackgroundImageView.getLayoutParams().width = iconWidth;
 		batterySaverModeImageView.getLayoutParams().width = iconWidth;
 
-		// set the height of the image views
-		// toggleImageView.getLayoutParams().height = iconHeight;
-		// viewModeImageView.getLayoutParams().height = iconHeight;
-		// appChangeIntensityImageView.getLayoutParams().height = iconHeight;
-		// volumeImageView.getLayoutParams().height = iconHeight;
-		// changeBackgroundImageView.getLayoutParams().height = iconHeight;
-		// batterySaverModeImageView.getLayoutParams().height = iconHeight;
-
 		// toggle imageview to hide the menu
 		toggleImageView.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
-				Animation anim = new TranslateAnimation(0, 0, HEIGHT,
-						HEIGHT * 2);
-				anim.setDuration(animationDuration);
-				iconLayout.setVisibility(View.GONE);
-				iconLayout.setAnimation(anim);
 			}
 		});
-
-		// icon layout
-		iconLayout = (LinearLayout) findViewById(R.id.icon_container);
 
 		String backgroundUriStrig = sharedPref.getString(
 				Constants.BACKGROUND_URI, null);
 		if (backgroundUriStrig != null) {
 			setBackground(Uri.parse(backgroundUriStrig));
 		}
-
-		audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-		audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-
-		Fragment appFragment = new AppFragment();
-
-		fm = getSupportFragmentManager();
-		ft = fm.beginTransaction();
-		ft.add(R.id.main_frame, appFragment, Constants.TAG_APP).commit();
 
 		changeBackgroundImageView
 				.setOnClickListener(new View.OnClickListener() {
@@ -252,4 +276,51 @@ public class LauncherActivity extends FragmentActivity {
 		}
 	}
 
+	private void setUpMenu() {
+		int radius = WIDTH / 4;
+		RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(
+				ICON_WIDTH, ICON_HEIGHT);
+		params1.setMargins(radius, HEIGHT - 100, 0, 0);
+		viewModeImageView.setLayoutParams(params1);
+
+		RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(
+				ICON_WIDTH, ICON_HEIGHT);
+		params2.setMargins(WIDTH * 3 / 8, HEIGHT - getY(radius, WIDTH / 8)
+				- 100, 0, 0);
+		changeBackgroundImageView.setLayoutParams(params2);
+
+		RelativeLayout.LayoutParams params3 = new RelativeLayout.LayoutParams(
+				ICON_WIDTH, ICON_HEIGHT);
+		params3.setMargins(WIDTH / 2, HEIGHT * 7 / 8, 0, 0);
+		volumeImageView.setLayoutParams(params3);
+		
+		RelativeLayout.LayoutParams params4 = new RelativeLayout.LayoutParams(ICON_WIDTH, ICON_HEIGHT);
+		params4.setMargins(WIDTH * 5 / 8, HEIGHT - getY(radius, WIDTH / 8) - 100, 0, 0);
+		appChangeIntensityImageView.setLayoutParams(params4);
+		
+		RelativeLayout.LayoutParams params5 = new RelativeLayout.LayoutParams(
+				ICON_WIDTH, ICON_HEIGHT);
+		params5.setMargins(radius * 3, HEIGHT - 100, 0, 0);
+		batterySaverModeImageView.setLayoutParams(params5);
+	}
+
+	private int getY(int r, int x) {
+		return (int) Math.round(Math.sqrt((r * r) - (x * x)));
+	}
+
+	private void hideMenu() {
+		viewModeImageView.setVisibility(View.GONE);
+		volumeImageView.setVisibility(View.GONE);
+		changeBackgroundImageView.setVisibility(View.GONE);
+		appChangeIntensityImageView.setVisibility(View.GONE);
+		batterySaverModeImageView.setVisibility(View.GONE);
+	}
+
+	private void showMenu() {
+		viewModeImageView.setVisibility(View.VISIBLE);
+		volumeImageView.setVisibility(View.VISIBLE);
+		changeBackgroundImageView.setVisibility(View.VISIBLE);
+		appChangeIntensityImageView.setVisibility(View.VISIBLE);
+		batterySaverModeImageView.setVisibility(View.VISIBLE);
+	}
 }

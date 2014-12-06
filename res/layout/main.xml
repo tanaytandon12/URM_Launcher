@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="5dp" />
+    android:layout_height="match_parent" >
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="9"
-        android:orientation="horizontal" >
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp" />
 
         <FrameLayout
             android:id="@+id/main_frame"
@@ -22,56 +20,69 @@
         </FrameLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/icon_container"
+    <TextView 
+        android:id="@+id/hint_swipe_text"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="2dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:visibility="gone" >
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:text="@string/swipe_hint"/>
+    
+    <ImageView 
+        android:id="@+id/hint_swipe_image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/icon_height"
+        android:src="@drawable/slide_up"
+        android:contentDescription="@string/swipe_hint"
+        android:layout_alignParentBottom="true"/>
+    
+    <ImageView
+        android:id="@+id/icon_volume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/volume"
+        android:src="@drawable/loud"
+        android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/icon_volume"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/icon_height"
-            android:contentDescription="@string/volume"
-            android:src="@drawable/loud" />
+    <ImageView
+        android:id="@+id/icon_battery_saver"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/icon_height"
+        android:contentDescription="@string/battery_saver"
+        android:src="@drawable/battery_high"
+        android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/icon_battery_saver"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/icon_height"
-            android:contentDescription="@string/battery_saver"
-            android:src="@drawable/battery_high" />
+    <ImageView
+        android:id="@+id/icon_background"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/icon_height"
+        android:contentDescription="@string/background"
+        android:src="@drawable/background"
+        android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/icon_background"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/icon_height"
-            android:contentDescription="@string/background"
-            android:src="@drawable/background" />
+    <ImageView
+        android:id="@+id/icon_intensity"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/icon_height"
+        android:contentDescription="@string/intensity"
+        android:src="@drawable/app_intensity_medium"
+        android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/icon_intensity"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/icon_height"
-            android:contentDescription="@string/intensity"
-            android:src="@drawable/app_intensity_medium" />
+    <ImageView
+        android:id="@+id/icon_view"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/icon_height"
+        android:contentDescription="@string/widget"
+        android:src="@drawable/app"
+        android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/icon_view"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/icon_height"
-            android:contentDescription="@string/widget"
-            android:src="@drawable/app" />
+    <ImageView
+        android:id="@+id/icon_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/icon_height"
+        android:contentDescription="@string/toggle_direction"
+        android:src="@drawable/ic_launcher"
+        android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/icon_toggle"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/icon_height"
-            android:contentDescription="@string/toggle_direction"
-            android:src="@drawable/ic_launcher" />
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

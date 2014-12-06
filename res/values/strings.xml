@@ -7,7 +7,6 @@
     <string name="icon_description">It is an icon</string>
     <string name="change_background">Change the background</string>
     <string name="lock">Lock the phone</string>
-    
     <string name="volume">Volume Control Icon</string>
     <string name="battery_saver">Toggle battery saver mode</string>
     <string name="background">Change the background of the application</string>
@@ -15,5 +14,6 @@
     <string name="intensity">Change the intensity of the icon change rate</string>
     <string name="open_widget">Open the widget view</string>
     <string name="silent">Change the silence mode</string>
+    <string name="swipe_hint">Swipe up to view menu and swipe down to hide menu</string>
 
 </resources>

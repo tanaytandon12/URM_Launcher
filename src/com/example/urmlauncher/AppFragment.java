@@ -1,11 +1,13 @@
 package com.example.urmlauncher;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -31,6 +33,7 @@ public class AppFragment extends Fragment {
 	private GridAdapter smallAdapter;
 	private DatabaseHelper mDatabaseHelper;
 	private Context context;
+	private SharedPreferences sharedPref;
 	private boolean onPauseCalled;
 	private HashMap<String, ResolveInfo> map;
 	private RelativeLayout[] appLayouts = new RelativeLayout[9];
@@ -51,14 +54,18 @@ public class AppFragment extends Fragment {
 			R.id.medium_app_icon_4, R.id.medium_app_icon_5,
 			R.id.medium_app_icon_6, R.id.large_app_icon_1,
 			R.id.large_app_icon_2, R.id.large_app_icon_3 };
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent,
 			Bundle savedInstanceState) {
 		Log.d("", "fuck this shit");
 		View view = inflater.inflate(R.layout.fragment_app, parent, false);
 		context = getActivity().getApplicationContext();
-		
+
+		// get the shared Preference
+		sharedPref = getActivity().getSharedPreferences(Constants.URM,
+				Context.MODE_PRIVATE);
+
 		int width = LauncherActivity.WIDTH / 3;
 		int mediumHeight = LauncherActivity.HEIGHT * 3 / 32;
 		int largeHeight = LauncherActivity.HEIGHT / 8;
@@ -101,9 +108,11 @@ public class AppFragment extends Fragment {
 
 			@Override
 			public void onClick(View view) {
-				view.setBackgroundColor(Color.parseColor("#00CCCC"));
-				String appName = view.getTag().toString();
-				launchApplication(appName);
+				if (sharedPref.getBoolean(Constants.APP_LAUNCH, false)) {
+					view.setBackgroundColor(Color.parseColor("#00CCCC"));
+					String appName = view.getTag().toString();
+					launchApplication(appName);
+				}
 			}
 		};
 
@@ -195,8 +204,11 @@ public class AppFragment extends Fragment {
 			appIconImageViews[i].setImageDrawable(drawable);
 		}
 
+		List<String> smallList = appList.subList(9, appList.size());
+		Collections.sort(smallList);
+
 		GridAdapter.setMap(map);
-		smallAdapter = new GridAdapter(context, appList.subList(9, appList.size()),
+		smallAdapter = new GridAdapter(context, smallList,
 				LauncherActivity.HEIGHT / 12, LauncherActivity.WIDTH / 3);
 
 		smallGridView.setAdapter(smallAdapter);
@@ -204,22 +216,22 @@ public class AppFragment extends Fragment {
 	}
 
 	private void launchApplication(String appName) {
-		ResolveInfo clickedResolveInfo = map.get(appName);
+			ResolveInfo clickedResolveInfo = map.get(appName);
 
-		ActivityInfo clickedActivityInfo = clickedResolveInfo.activityInfo;
+			ActivityInfo clickedActivityInfo = clickedResolveInfo.activityInfo;
 
-		// update the database based on the click
-		mDatabaseHelper.updateCount(appName);
+			// update the database based on the click
+			mDatabaseHelper.updateCount(appName);
 
-		// start the application that was selected
-		Intent intent = new Intent(Intent.ACTION_MAIN);
-		intent.addCategory(Intent.CATEGORY_LAUNCHER);
-		intent.setClassName(clickedActivityInfo.applicationInfo.packageName,
-				clickedActivityInfo.name);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-				| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-		startActivity(intent);
-
-	}
+			// start the application that was selected
+			Intent intent = new Intent(Intent.ACTION_MAIN);
+			intent.addCategory(Intent.CATEGORY_LAUNCHER);
+			intent.setClassName(
+					clickedActivityInfo.applicationInfo.packageName,
+					clickedActivityInfo.name);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+					| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+			startActivity(intent);
+		}
 
 }

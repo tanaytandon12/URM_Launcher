@@ -60,17 +60,19 @@ public class OnSwipeTouchListener implements OnTouchListener {
 	public void onSwipeDown() {
 
 	}
-	
+
 	public void onSwipeRight() {
-		
+
 	}
 
 	public void onSwipeLeft() {
-		
+
 	}
-	
+
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
+		Log.d("", "onTouch");
+		Log.d("", String.valueOf(gestureDetector.onTouchEvent(event)));
 		return gestureDetector.onTouchEvent(event);
 	}
 
